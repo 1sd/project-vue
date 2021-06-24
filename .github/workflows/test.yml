@@ -64,7 +64,8 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           
       - run: ls
-      - run: cd /CodePipeline
+      - run: cd CodePipeline
+      - run: ls
       - run: cd ..
       
       - name: Slack Notification on Success
