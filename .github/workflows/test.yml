@@ -44,12 +44,12 @@ jobs:
 #           role-to-assume: ${{ env.AWS_ROLE_ARN }}
 #           role-duration-seconds: 1200
         
-#       - name: Checkout project-Deploy
-#         uses: actions/checkout@v2
-#         with:
-#           repository: lvgs/project-Deploy
-#           token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-#           path: external
+      - name: Checkout project-Deploy
+        uses: actions/checkout@v2
+        with:
+          repository: 1sd/CodePipeline
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          path: external
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -63,7 +63,7 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           
-      - run: aws configure list
+      - run: ls
       
       - name: Slack Notification on Success
         if: success()
