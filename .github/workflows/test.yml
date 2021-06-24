@@ -67,13 +67,12 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
       
       - name: Slack Notification on Success
-        if: always()
+        if: success()
         uses: tokorom/action-slack-incoming-webhook@main
         env:
           INCOMING_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         with:
           attachments: |
-            if: success()
             [
               {
                 "color": "#5AFF19",
@@ -82,17 +81,17 @@ jobs:
               }
             ]
 
-#       - name: Slack Notification on Failure
-#         uses: tokorom/action-slack-incoming-webhook@main
-#         if: failure()
-#         env:
-#           INCOMING_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-#         with:
-#           attachments: |
-#             [
-#               {
-#                 "color": danger,
-#                 "text": "[failure][${{ env.DEPLOY_TARGET }}] ${{ github.event.repository.url }} deployment start...",
-#                 "footer": "<${{ github.event.repository.url }}/actions/runs/${{ github.run_id }}|#${{ github.run_number }}> build from <${{ github.event.pull_request.html_url }}|#${{ github.event.pull_request.number }}>"
-#               }
-#             ]
+      - name: Slack Notification on Failure
+        uses: tokorom/action-slack-incoming-webhook@main
+        if: failure() && always()
+        env:
+          INCOMING_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        with:
+          attachments: |
+            [
+              {
+                "color": danger,
+                "text": "[failure][${{ env.DEPLOY_TARGET }}] ${{ github.event.repository.url }} deployment start...",
+                "footer": "<${{ github.event.repository.url }}/actions/runs/${{ github.run_id }}|#${{ github.run_number }}> build from <${{ github.event.pull_request.html_url }}|#${{ github.event.pull_request.number }}>"
+              }
+            ]
