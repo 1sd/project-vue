@@ -53,6 +53,10 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: ${{ env.NODE_VERSION }}
+          
+      - run: composer -v
+      - run: node -v
+      - run: php -v
       
       - name: Slack Notification on Success
         if: success()
