@@ -90,7 +90,7 @@ jobs:
           attachments: |
             [
               {
-                "color": danger,
+                "color": "#ff0000",
                 "text": "[failure][${{ env.DEPLOY_TARGET }}] ${{ github.event.repository.url }} deployment start...",
                 "footer": "<${{ github.event.repository.url }}/actions/runs/${{ github.run_id }}|#${{ github.run_number }}> build from <${{ github.event.pull_request.html_url }}|#${{ github.event.pull_request.number }}>"
               }
