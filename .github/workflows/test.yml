@@ -12,6 +12,14 @@ on:
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+  
+env:
+  DEPLOY_TARGET: Test
+#   SSH_KEY: ${{ secrets.TEST_SSH_KEY }}
+#   AWS_ROLE_ARN: ${{ secrets.TEST_AWS_ASSUME_ROLE_ARN }}
+  NODE_VERSION: 12
+  PHP_VERSION: '7.3'
+  COMPOSER: composer:v1
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -31,7 +39,7 @@ jobs:
             [
               {
                 "color": "#5bc0de",
-                "text": "[info][TEST] ${{ github.event.repository.url }} deployment start...",
+                "text": "[info][${{ env.DEPLOY_TARGET }}] ${{ github.event.repository.url }} deployment start...",
                 "footer": "<${{ github.event.repository.url }}/actions/runs/${{ github.run_id }}|#${{ github.run_number }}> build from <${{ github.event.pull_request.html_url }}|#${{ github.event.pull_request.number }}>"
               }
             ]
@@ -49,11 +57,41 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '7.3'
+          php-version: ${{ env.PHP_VERSION }}
           extensions: mbstring, gd, xml, intl
-          tools: pecl, deployer, composer:v1
+          tools: pecl, deployer, ${{ env.COMPOSER }}
           
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: 12
+          node-version: ${{ env.NODE_VERSION }}
+      
+      - name: Slack Notification on Success
+        if: success()
+        uses: tokorom/action-slack-incoming-webhook@main
+        env:
+          INCOMING_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        with:
+          attachments: |
+            [
+              {
+                "color": good,
+                "text": "[success][${{ env.DEPLOY_TARGET }}] ${{ github.event.repository.url }} deployment start...",
+                "footer": "<${{ github.event.repository.url }}/actions/runs/${{ github.run_id }}|#${{ github.run_number }}> build from <${{ github.event.pull_request.html_url }}|#${{ github.event.pull_request.number }}>"
+              }
+            ]
+
+      - name: Slack Notification on Failure
+        uses: tokorom/action-slack-incoming-webhook@main
+        if: failure()
+        env:
+          INCOMING_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        with:
+          attachments: |
+            [
+              {
+                "color": danger,
+                "text": "[failure][${{ env.DEPLOY_TARGET }}] ${{ github.event.repository.url }} deployment start...",
+                "footer": "<${{ github.event.repository.url }}/actions/runs/${{ github.run_id }}|#${{ github.run_number }}> build from <${{ github.event.pull_request.html_url }}|#${{ github.event.pull_request.number }}>"
+              }
+            ]
