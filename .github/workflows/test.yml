@@ -14,7 +14,7 @@ on:
   workflow_dispatch:
   
 env:
-  DEPLOY_TARGET: Test
+  DEPLOY_TARGET: TEST
 #   SSH_KEY: ${{ secrets.TEST_SSH_KEY }}
 #   AWS_ROLE_ARN: ${{ secrets.TEST_AWS_ASSUME_ROLE_ARN }}
   NODE_VERSION: 12
@@ -75,7 +75,7 @@ jobs:
           attachments: |
             [
               {
-                "color": good,
+                "color": "#5bc0de",
                 "text": "[success][${{ env.DEPLOY_TARGET }}] ${{ github.event.repository.url }} deployment start...",
                 "footer": "<${{ github.event.repository.url }}/actions/runs/${{ github.run_id }}|#${{ github.run_number }}> build from <${{ github.event.pull_request.html_url }}|#${{ github.event.pull_request.number }}>"
               }
