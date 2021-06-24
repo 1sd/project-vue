@@ -49,7 +49,7 @@ jobs:
         with:
           repository: 1sd/CodePipeline
           token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-          path: external
+          path: CodePipeline
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -64,6 +64,8 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           
       - run: ls
+      - run: cd CodePipeline
+      - run: cd ..
       
       - name: Slack Notification on Success
         if: success()
