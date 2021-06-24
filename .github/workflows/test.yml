@@ -83,7 +83,7 @@ jobs:
 
       - name: Slack Notification on Failure
         uses: tokorom/action-slack-incoming-webhook@main
-        if: failure() && always()
+        if: failure()
         env:
           INCOMING_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         with:
