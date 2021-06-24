@@ -66,20 +66,20 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
       
-#       - name: Slack Notification on Success
-#         if: success()
-#         uses: tokorom/action-slack-incoming-webhook@main
-#         env:
-#           INCOMING_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-#         with:
-#           attachments: |
-#             [
-#               {
-#                 "color": good,
-#                 "text": "[success][${{ env.DEPLOY_TARGET }}] ${{ github.event.repository.url }} deployment start...",
-#                 "footer": "<${{ github.event.repository.url }}/actions/runs/${{ github.run_id }}|#${{ github.run_number }}> build from <${{ github.event.pull_request.html_url }}|#${{ github.event.pull_request.number }}>"
-#               }
-#             ]
+      - name: Slack Notification on Success
+        if: always()
+        uses: tokorom/action-slack-incoming-webhook@main
+        env:
+          INCOMING_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        with:
+          attachments: |
+            [
+              {
+                "color": good,
+                "text": "[success][${{ env.DEPLOY_TARGET }}] ${{ github.event.repository.url }} deployment start...",
+                "footer": "<${{ github.event.repository.url }}/actions/runs/${{ github.run_id }}|#${{ github.run_number }}> build from <${{ github.event.pull_request.html_url }}|#${{ github.event.pull_request.number }}>"
+              }
+            ]
 
 #       - name: Slack Notification on Failure
 #         uses: tokorom/action-slack-incoming-webhook@main
@@ -95,14 +95,3 @@ jobs:
 #                 "footer": "<${{ github.event.repository.url }}/actions/runs/${{ github.run_id }}|#${{ github.run_number }}> build from <${{ github.event.pull_request.html_url }}|#${{ github.event.pull_request.number }}>"
 #               }
 #             ]
-
-  slack-notify:
-    if: always()
-    needs: [build]
-    name: workflow notification to slack
-    runs-on: ubuntu-latest
-    steps:
-      - uses: Gamesight/slack-workflow-status@master
-        with:
-#           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          slack_webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
