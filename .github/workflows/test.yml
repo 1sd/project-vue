@@ -67,7 +67,7 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
       
       - name: Slack Notification on Success
-        if: always()
+        if: success()
         uses: tokorom/action-slack-incoming-webhook@main
         env:
           INCOMING_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
@@ -75,7 +75,7 @@ jobs:
           attachments: |
             [
               {
-                "color": "#5bc0de",
+                "color": "#5AFF19",
                 "text": "[success][${{ env.DEPLOY_TARGET }}] ${{ github.event.repository.url }} deployment start...",
                 "footer": "<${{ github.event.repository.url }}/actions/runs/${{ github.run_id }}|#${{ github.run_number }}> build from <${{ github.event.pull_request.html_url }}|#${{ github.event.pull_request.number }}>"
               }
