@@ -22,19 +22,6 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
-
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
-
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
-        run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
-          
       - name: Slack Notification
         uses: tokorom/action-slack-incoming-webhook@main
         env:
@@ -48,3 +35,25 @@ jobs:
                 "footer": "<${{ github.event.repository.url }}/actions/runs/${{ github.run_id }}|#${{ github.run_number }}> build from <${{ github.event.pull_request.html_url }}|#${{ github.event.pull_request.number }}>"
               }
             ]
+            
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        
+#       - name: Checkout project-Deploy
+#         uses: actions/checkout@v2
+#         with:
+#           repository: lvgs/project-Deploy
+#           token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+#           path: external
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.3'
+          extensions: mbstring, gd, xml, intl
+          tools: pecl, deployer, composer:v1
+          
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 12
