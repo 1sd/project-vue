@@ -54,9 +54,7 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           
-      - run: composer -v
-      - run: node -v
-      - run: php -v
+      - run: nginx -V
       
       - name: Slack Notification on Success
         if: success()
