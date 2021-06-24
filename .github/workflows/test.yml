@@ -40,4 +40,11 @@ jobs:
         env:
           INCOMING_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         with:
-          text: Hello, Slack!
+          attachments: |
+            [
+              {
+                "color": "#5bc0de",
+                "text": "[info][TEST] ${{ github.event.repository.url }} deployment start...",
+                "footer": "<${{ github.event.repository.url }}/actions/runs/${{ github.run_id }}|#${{ github.run_number }}> build from <${{ github.event.pull_request.html_url }}|#${{ github.event.pull_request.number }}>"
+              }
+            ]
