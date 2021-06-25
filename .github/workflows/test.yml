@@ -50,6 +50,13 @@ jobs:
           repository: 1sd/CodePipeline
 #           token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           path: CodePipeline
+          
+      - name: Checkout project-Search
+        uses: actions/checkout@v2
+        with:
+          repository: 1sd/project-search
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          path: project-search
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -64,6 +71,7 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           
       - run: cat CodePipeline/Dockerfile
+      - run: cat project-search/docker-logstash/logstash/Dockerfile
       - run: ls
       
       - name: Slack Notification on Success
